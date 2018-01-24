@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<title>Lista</title>
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<script
+  		src="https://code.jquery.com/jquery-3.3.1.js"
+  		integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  		crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<h1>¡Vamos a hacer una lista!</h1>
+		<input type="text"><button id="añadir">Añadir</button>
+		<h2>Tú lista</h2>
+		<ul>
+		</ul>
+		<button id="borrar">Borrar todo</button>
+	</body>
+	<script>
+	$( document ).ready(function() {
+		let elementosLista=[];
+		let value= -1;
+
+		var restoredSession = JSON.parse(localStorage.getItem('elementosLista'));
+		if (restoredSession.length>0) elementosLista=restoredSession;
+		for (dato of elementosLista){
+			pintalista(dato);
+		}
+
+
+		$('#añadir').click(function(){
+			value+=1;
+			let campo=$('input').val();
+			elementosLista.push(campo);
+			pintalista(campo);
+			localStorage.setItem('elementosLista', JSON.stringify(elementosLista));
+			$('input').val("");
+		});
+
+		function pintalista(contenido){
+
+
+			$('ul').append("<li data-valor='"+ value+ "'>"+ contenido + '<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i><i class="fa fa-times" aria-hidden="true"></i></li>');
+
+		}
+
+		$("ul").on('click', '.fa-times', function(){
+			$(this).parent().remove();
+		});
+
+		$("ul").on('click', '.fa-arrow-up', function(){
+			console.log($(this).parent());
+			$(this).parent().insertBefore($(this).parent().prev());
+	
+		});
+
+		$("ul").on('click', '.fa-arrow-down', function(){
+						console.log($(this).parent());
+
+			$(this).parent().insertAfter($(this).parent().next());
+		});
+
+
+		$('#borrar').click(function(){
+			
+			$('li').remove();
+		});
+ 
+	});
+	</script>
+</html>
